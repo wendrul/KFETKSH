@@ -1,14 +1,17 @@
+#!/usr/bin/python3
+
 from tkinter import *
 import parsing
-import numpy as np
-import copy as cp
+
+
 
 def add_to_cart(window, item, count):
     if (item[3] == 0):
         count[0] += 1
-        lbl = Label(window, text = item[0] + " x " + str(item[3]) + " = " + "{:.2f}".format(float(item[1]) * item[3]) + "€")
-        lbl.grid(column = 0, row = 3 + count[0])
     item[3] += 1
+    lbl = Label(window, text = item[0] + " x " + str(item[3]) + " = " + "{:.2f}".format(float(item[1]) * item[3]) + "€")
+    lbl.grid(column = 0, row = 4 + count[0])
+    
 
 
 def checkout(data, window):
@@ -17,9 +20,9 @@ def checkout(data, window):
     for item in data:
         price += float(item[1]) * item[3]
     lbl = Label(window, text = "Total: " + "{:.2f}".format(price) + "€")
-    lbl.grid(column = 2, row = 4)
+    lbl.grid(column = 2, row = 5)
     btn = Button(window, text = "Back", command = (lambda : start(window)))
-    btn.grid(column = 2, row = 5)
+    btn.grid(column = 2, row = 6)
 
 def all_children (window) :
     _list = window.winfo_children()
@@ -37,21 +40,21 @@ def erase(window):
 
 def start(window):
     erase(window)
-    lbl = Label(window, text="Choose an item")
+    lbl = Label(window, text="Choose")
     lbl.grid(column=0, row=0)
     data = parsing.get_file("KFETitems.txt")
     i = 0
     count = [0]
     def toto(i):
         btn = Button(window, text = data[i][0], command = (lambda : add_to_cart(window, data[i], count)))
-        btn.grid(column = 2 * (i // 3), row = i % 3 + 1)
+        btn.grid(column = 2 * (i // 4), row = i % 4 + 1)
         lbl = Label(window, text = data[i][1] + "€")
-        lbl.grid(column = 2 * (i // 3) + 1, row = i % 3 + 1)
+        lbl.grid(column = 2 * (i // 4) + 1, row = i % 4 + 1)
     for i in range(len(data)):
         toto(i)
     btn = Button(window, text = "Checkout", command =(lambda : checkout(data, window)))
     i+=1
-    btn.grid(column = 2 * (i // 3) + 1, row = 3)
+    btn.grid(column = 2 * (i // 4) + 1, row = 4)
 
 def main():
     master = Tk()
@@ -59,9 +62,6 @@ def main():
     master.geometry('300x200')
     start(master)
     master.mainloop()
-
-
-
-
+main()
 
 
